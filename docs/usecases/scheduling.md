@@ -55,10 +55,10 @@ import zio.Schedule
 import zio.Schedule.Decision
 
 object ScheduleUtil {
-  def schedule[A] = Schedule.spaced(1.second) && Schedule.recurs(4).onDecision({
-    case Decision.Done(_)                 => putStrLn(s"done trying")
-    case Decision.Continue(attempt, _, _) => putStrLn(s"attempt #$attempt")
-  })
+  def schedule[A] = Schedule.recurs(4) && Schedule.spaced(1.second).onDecision {
+    case Decision.Done(_)             => putStrLn(s"done trying")
+    case Decision.Continue(att, _, _) => putStrLn(s"attempt #$att")
+  }
 }
 ```
 You've now created a retry strategy that will attempt an effect every second for a maximum of 5 attempts while logging each attempt. The usage of the schedule would look like this:
